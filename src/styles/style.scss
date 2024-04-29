@@ -106,18 +106,18 @@ button {
   }
 }
 .chat-page header {
-  background: #4d4c7d;
+  background: #282043;
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 20px;
 
   button {
-    background: #f99417;
+    background: #ff8c00;
   }
 }
 .chat-page form {
-  background: #4d4c7d;
+  background: #282043;
   display: flex;
   justify-content: center;
   padding: 10px;
@@ -131,9 +131,44 @@ button {
     box-shadow: 2px 3px 10px black;
   }
   button {
-    background: #f99417;
+    background: #ff8c00;
   }
 }
 .chat-page main {
+  display: flex;
+  flex-direction: column;
+  overflow: auto;
+  gap: 10px;
+  padding: 10px;
   flex: 1;
+}
+.msg-other {
+  color: black;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+
+  div {
+    display: flex;
+    align-items: center;
+    img {
+      gap: 10px;
+      width: 40px;
+      border-radius: 50%;
+    }
+    span {
+      font-weight: bold;
+    }
+  }
+  p {
+    color: black;
+  }
+}
+.msg-user {
+  margin-right: 10px;
+  background: #ff8c00;
+  color: black;
+  align-self: flex-end;
+  padding: 4px 8px;
+  border-radius: 7px 7px 0 7px;
 }

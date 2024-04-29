@@ -1,8 +1,19 @@
-import { addDoc, collection, serverTimestamp } from "firebase/firestore";
+import {
+  addDoc,
+  collection,
+  onSnapshot,
+  query,
+  where,
+  orderBy,
+  serverTimestamp,
+} from "firebase/firestore";
 import { auth, db } from "../firebase/config";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import Message from "../components/Message";
 
 const ChatPage = ({ room, setRoom }) => {
+  const [messages, setMessages] = useState([]);
+
   // formun gonderilmesini kontrol et
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -13,7 +24,7 @@ const ChatPage = ({ room, setRoom }) => {
     await addDoc(messagesCol, {
       text: e.target[0].value,
       room,
-      author: {
+      sender: {
         id: auth.currentUser.uid,
         name: auth.currentUser.displayName,
         photo: auth.currentUser.photoURL,
@@ -28,6 +39,27 @@ const ChatPage = ({ room, setRoom }) => {
 
   useEffect(() => {
     // hangi koleksiyondaki verileri istiyorsak o koleksiyonun referansini aliriz
+    const messagesCol = collection(db, "messages");
+
+    // sorgu olustur
+
+    const q = query(
+      messagesCol,
+      where("room", "==", room),
+      orderBy("createdAt", "asc")
+    );
+
+    // koleksiyondaki verileri al()guncel olmasi icin snapshot kullandik, yoksa getDocs kullanabilirdik
+    onSnapshot(q, (snapshot) => {
+      // verileri gecici olarak tutacagimiz dizi
+      const temp = [];
+      // dokumandaki verileri don ve verilere eris
+      snapshot.docs.forEach((doc) => {
+        temp.push(doc.data());
+      });
+      // guncel mesajlari state'e aktar
+      setMessages(temp);
+    });
   }, []);
   return (
     <div className="chat-page">
@@ -36,9 +68,14 @@ const ChatPage = ({ room, setRoom }) => {
         <p>{room}</p>
         <button onClick={() => setRoom(null)}>Change Room</button>
       </header>
-      <main>messages</main>
+
+      <main>
+        {messages.map((data, i) => (
+          <Message key={i} data={data} />
+        ))}
+      </main>
       <form onSubmit={handleSubmit}>
-        <input type="text" placeholder="Enter your message..." />
+        <input type="text" placeholder="Enter your messages..." />
         <button>Send</button>
       </form>
     </div>

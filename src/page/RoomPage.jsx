@@ -17,7 +17,7 @@ const RoomPage = ({ setIsAuth, setRoom }) => {
       <h1>Chat Room</h1>
       <p>Which chat room do you want to enter?</p>
 
-      <input type="text" placeholder="exm: free-chat" required />
+      <input type="text" placeholder="e. g. : free-chat" required />
 
       <button>Enter</button>
       <button onClick={logOut}>Quit</button>
