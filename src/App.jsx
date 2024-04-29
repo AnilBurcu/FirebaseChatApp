@@ -1,16 +1,26 @@
 import { useState } from "react";
 import LoginPage from "./page/LoginPage";
 import RoomPage from "./page/RoomPage";
+import ChatPage from "./page/ChatPage";
 
 const App = () => {
+  // kullanıcının yetkisi var mı state'i
   const [isAuth, setIsAuth] = useState(localStorage.getItem("token"));
+  // kullanıcının hangi odaya girdiğinin state'i
+  const [room, setRoom] = useState(null);
 
   // yetkisi yoksa giriş sayfasına yönlendir
   if (!isAuth) return <LoginPage setIsAuth={setIsAuth} />;
-  // yetkisi varsa oda seçme sayfasına yönlendir
+  // yetkisi varsa
   return (
     <div className="container">
-      <RoomPage />
+      {room ? (
+        // oda seçildiyse > sohbet sayfası
+        <ChatPage room={room} setRoom={setRoom} />
+      ) : (
+        // oda tanımsızsa > oda seçme sayfası
+        <RoomPage setIsAuth={setIsAuth} setRoom={setRoom} />
+      )}
     </div>
   );
 };
