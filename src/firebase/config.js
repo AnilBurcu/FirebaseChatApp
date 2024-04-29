@@ -22,4 +22,4 @@ const app = initializeApp(firebaseConfig);
 // firebase'deki auth yapısının referansını react uygulamasına alma
 export const auth = getAuth(app)
 // google sağlayıcısının kurulumu(apple,github vs ona göre gerekli sağlayıcının kurulumu)
-export const provider = GoogleAuthProvider()
+export const provider = new GoogleAuthProvider()
